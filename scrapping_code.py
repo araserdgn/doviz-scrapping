@@ -38,11 +38,55 @@ def calculator():
             for i ,(currency_type, sell_price) in enumerate(prices): #enumarate sıralı olarak gelemsini sağlar
                 pay_amount = tl_amount/sell_price
                 currency_label = tk.Label(result_canvas_frame, text=currency_type, font=("Arial",12), anchor="w")
-                currency_label.grid(row=i , column=0, padx=10 , pady=5, sticky="w") # Label'ı yani para birimini canvas'da yerleştirdik
-                amount_label = tk.Label(result_canvas_frame, text=f'{pay_amount:.2f}', font=("Arial",12), anchor="e")
-                amount_label.grid(row=i , column=1, padx=10 , pady=5, sticky="e")
+                currency_label.grid(row=i , column=0, padx=10 , pady=5, sticky="w") # Label'ı yani para biriminin ismini canvas'da yerleştirdik
+                instant_price = tk.Label(result_canvas_frame, text=sell_price, font=("Arial", 12), anchor="w") #anlık olarak para birimi fiyatını yerlestrdk
+                instant_price.grid(row=i, column=1, padx=10, pady=5, sticky="w")
+                amount_label = tk.Label(result_canvas_frame, text=f'{pay_amount:.2f}', font=("Arial",12, "bold"), anchor="e")
+                amount_label.grid(row=i , column=3, padx=10 , pady=5, sticky="e") # satın alınacak miktarı yerleştirdk
             # scrooll ayarlar
             result_canvas.update_idletasks()
             result_canvas.config(scrollregion=result_canvas.bbox("all"))
     except ValueError:
         messagebox.showerror("Hata", "Litfen geçerli TL miktarı giriniz.")
+
+# Tkinder arayüz
+root = tk.Tk()
+root.title('Currency Calculator')
+root.geometry('500x500')
+root.config(bg="#e6e6fa")
+
+# baslık
+title_label = tk.Label(root, text="Currency Calculator", font=("Arial", 24, "bold"), bg="#e6e6fa")
+title_label.pack(pady=20)
+
+# yatırım miktar girişi
+entry_frame = tk.Frame(root, bg="#e6e6fa")
+entry_frame.pack(pady=10)
+entry_label = tk.Label(entry_frame, text="Yatırılacak (TL) Miktarı :", font=("Arial",14) ,bg="#e6e6fa")
+entry_label.grid(row=0, column=0, padx=5)
+entry_investmen = tk.Entry(entry_frame, font=("Arial",14), width=10)
+entry_investmen.grid(row=0,column=1, padx=5)
+
+# Hesaplama butonu
+calculate_button = tk.Button(root, text="Hesapla", font=("Arial",14), command=calculator, bg="#4CAF50", fg="white")
+calculate_button.pack(pady=20)
+
+# Sonuçlar için bir frame kısmı tasarımı
+result_frame = tk.Frame(root, bg="#f0f0f0", bd=2, relief="solid")
+result_frame.pack(pady=10, fill="both")
+
+# canvas ekleme kısmı
+result_canvas = tk.Canvas(result_frame, bg="#f0f0f0")
+result_canvas.pack(side="left", fill="both", expand=True) # expand ile veri var ise frame içini doldurması komutunu ekledk
+
+# Scroll bar ekliyoruz
+scrollbar = tk.Scrollbar(result_frame, orient="vertical", command=result_canvas.yview)
+scrollbar.pack(side="right", fill="y")
+
+# sccrol'u canvas'a ekliyoruz
+result_canvas.configure(yscrollcommand=scrollbar.set)
+
+result_canvas_frame = tk.Frame(result_canvas, bg="#f0f0f0")
+result_canvas.create_window((0,0), window=result_canvas_frame, anchor="nw")
+
+root.mainloop()

@@ -37,12 +37,16 @@ def calculator():
                 widget.destroy()
             for i ,(currency_type, sell_price) in enumerate(prices): #enumarate sıralı olarak gelemsini sağlar
                 pay_amount = tl_amount/sell_price
+                instant_label = tk.Label(result_canvas_frame, text="Anlık Fiyat", font=("Arial",12),bg="#bd8633",fg="white", anchor="w")
+                instant_label.grid(row=0 , column=1, padx=10 , pady=5, sticky="w") # Anlık label yazısı
+                pay_can_label = tk.Label(result_canvas_frame, text="Alınabilecek Miktar", font=("Arial",12),bg="#d73343",fg="white", anchor="w")
+                pay_can_label.grid(row=0 , column=2, padx=10 , pady=5, sticky="w") # alınacak miktar yazısı
                 currency_label = tk.Label(result_canvas_frame, text=currency_type, font=("Arial",12), anchor="w")
-                currency_label.grid(row=i , column=0, padx=10 , pady=5, sticky="w") # Label'ı yani para biriminin ismini canvas'da yerleştirdik
+                currency_label.grid(row=i+1 , column=0, padx=10 , pady=5, sticky="w") # Label'ı yani para biriminin ismini canvas'da yerleştirdik
                 instant_price = tk.Label(result_canvas_frame, text=sell_price, font=("Arial", 12), anchor="w") #anlık olarak para birimi fiyatını yerlestrdk
-                instant_price.grid(row=i, column=1, padx=10, pady=5, sticky="w")
-                amount_label = tk.Label(result_canvas_frame, text=f'{pay_amount:.2f}', font=("Arial",12, "bold"), anchor="e")
-                amount_label.grid(row=i , column=3, padx=10 , pady=5, sticky="e") # satın alınacak miktarı yerleştirdk
+                instant_price.grid(row=i+1, column=1, padx=10, pady=5, sticky="w")
+                amount_label = tk.Label(result_canvas_frame, text=f'{pay_amount:.2f}', font=("Arial",12, "bold"), anchor="center")
+                amount_label.grid(row=i+1 , column=2, padx=10 , pady=5, sticky="nsew") # satın alınacak miktarı yerleştirdk
             # scrooll ayarlar
             result_canvas.update_idletasks()
             result_canvas.config(scrollregion=result_canvas.bbox("all"))
